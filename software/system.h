@@ -29,7 +29,7 @@
 
 //select extra memory:
 //extra memory is SRAM if running from DDR or DDR if running from SRAM
-#define EXTRA_BASE (1<<E)
+#define EXTRA_BASEtest (1<<E)
 
 //select boot controller
 #define BOOTCTR_BASE (1<<B)
