@@ -2,7 +2,7 @@ include $(ROOT_DIR)/system.mk
 
 #SUBMODULES
 
-#cpu
+#cputeste
 include $(CPU_DIR)/hardware/hardware.mk
 
 #cache
