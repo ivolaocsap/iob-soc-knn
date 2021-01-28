@@ -1,18 +1,23 @@
-defmacro:=-D
-incdir:=-I
-include $(ROOT_DIR)/system.mk
-
-#compiler settings
-TOOLCHAIN_PREFIX:=riscv64-unknown-elf-
-CFLAGS:=-Os -nostdlib -march=rv32im -mabi=ilp32
-
-#INCLUDE
-INCLUDE+=$(incdir)$(SW_DIR) $(incdir).
+include $(KNN_DIR)/core.mk
+#path
+KNN_SW_DIR:=$(KNN_DIR)/software
+#define
+ifeq ($D,1)
+DEFINE+=-DDEBUG
+endif
+#include
+INCLUDE+=-I$(KNN_SW_DIR)
 
 #headers
-HDR=$(SW_DIR)/system.h
+HDR+=$(KNN_SW_DIR)/*.h $(KNN_SW_DIR)/$(CORE_NAME)sw_reg.h
+HDR+=$(KNN_SW_DIR)/*.h $(KNN_SW_DIR)/KNNsw_reg.h
 
-#common sources (none so far)
-#SRC=$(SW_DIR)/*.c
+#sources
+SRC+=$(KNN_SW_DIR)/*.c
 
-.PHONY: periphs.h
+$(KNN_SW_DIR)/$(CORE_NAME)sw_reg.h: $(KNN_HW_INC_DIR)/$(CORE_NAME)sw_reg.v
+$(KNN_SW_DIR)/KNNsw_reg.h: $(KNN_HW_INC_DIR)/KNNsw_reg.v
+	$(LIB_DIR)/software/mkregs.py $< SW
+	mv $(CORE_NAME)sw_reg.h $@
+
+	mv KNNsw_reg.h $@

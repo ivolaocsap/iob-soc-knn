@@ -1,19 +1,18 @@
-ROOT_DIR:=../../..
-
-defmacro:=-D
+KNN_DIR:=../../..
 incdir:=-I
-
+defmacro:=-D
 include ../simulation.mk
 
-#simulator flags
-VLOG = iverilog -W all -g2005-sv $(INCLUDE) $(DEFINE) 
+#icarus verilog simulator
+VLOG:=iverilog -W all -g2005-sv
 
-#run the simulator
-run: $(VSRC) $(VHDR) firmware boot.hex
-	$(VLOG) $(VSRC)
-	./a.out $(LOG)
+run: a.out
+	./$<
 
-clean: hw-clean
-	@rm -f ./a.out *.log *.v
+a.out: $(VSRC) $(VHDR)
+	$(VLOG) $(INCLUDE) $(DEFINE) $(VSRC)
 
-.PHONY: clean
+clean: knn_clean_hw
+	@rm -f a.out *~ *.vcd
+
+.PHONY: all clean
